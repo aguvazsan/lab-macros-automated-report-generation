@@ -1,0 +1,28 @@
+Sub Process_5_ActiveSheet()
+    Dim lastRow As Long
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+    
+    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+    
+    ws.Columns("B:B").Insert Shift:=xlToRight
+    ws.Range("B2").Value = "EE_DDUCT"
+    ws.Range("B2").AutoFill Destination:=ws.Range("B2:B" & lastRow)
+    
+    ws.Range("C:AG").Delete Shift:=xlToLeft
+    ws.Range("D:F").Delete Shift:=xlToLeft
+    ws.Range("E:K").Delete Shift:=xlToLeft
+
+    ws.Columns("D:D").NumberFormat = "0"
+    ws.Columns("D:D").NumberFormat = "@"
+
+    ws.Range("E2").FormulaR1C1 = "=CONCATENATE(RC[-1], ""||||||"")"
+    ws.Range("E2").AutoFill Destination:=ws.Range("E2:E" & lastRow)
+
+    ws.Columns("E:E").Copy
+    ws.Columns("E:E").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Application.CutCopyMode = False
+
+    ws.Columns("D:D").Delete Shift:=xlToLeft
+    ws.Rows("1:1").Delete Shift:=xlUp
+End Sub
